@@ -1,39 +1,39 @@
-#include "button/color_button_man.h"
-#include "app_man/app_man.h"
-#include <SFML/Window/Event.hpp>
+#include "std/plugin.h"
+#include "shared/texture_man.h"
+#include "canvas/canvas_btn.h"
+#include <stdint.h>
 
-using kengine::ColorButton;
-using kengine::ColorButtonMan;
+using kengine::CanvasButton;
+using kengine::TexturedMan;
 
 int main()
 {
-    ColorButton but_1 { sf::Vector2i { 0, 0 }, 
-                        sf::Vector2i { 100, 100 }, 
-                        sf::Color::Green };
-    ColorButton but_2 { sf::Vector2i { 0, 600 }, 
-                        sf::Vector2i { 100, 700 },
-                        sf::Color::Blue };
-    ColorButton but_3 { sf::Vector2i { 0, 1100 }, 
-                        sf::Vector2i { 100, 1200 },
-                        sf::Color::Yellow };
-
     sf::RenderWindow window { sf::VideoMode { 1920, 1200 }, "Cringe" };
-    ColorButtonMan button { 3 };
+    CanvasButton btn { true, "textures/button.png", kengine::Border {} };
 
-    button.add_button( but_1);
-    button.add_button( but_2);
-    button.add_button( but_3);
+    auto man = TexturedMan::get_instance();
 
-    kengine::AppMan app { &window, 1, 1 };
-    app.add_man( &button);
+    man->texture_register( &btn);
+    man->load_texture();
 
+    uint32_t* pixmap = new uint32_t[1920 * 1200]; 
+
+    sf::Sprite sprite {};
+    sf::Texture texture {};
+    texture.create( 1920, 1200);
+    
     while ( window.isOpen() )
     {
         window.clear( sf::Color::Cyan);
-        app.on_action();
-        app.draw();
- 
+        btn.draw( pixmap, 1920, 1200);
+        texture.update( (sf::Uint8*)pixmap);
+        sprite.setTexture( texture);
+        window.draw( sprite);
         window.display();
 
     }
+
+    
+    return 0;
 }
+

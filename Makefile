@@ -4,7 +4,7 @@ IFLAGS = -I./
 LFLAGS = -lsfml-system -lsfml-graphics -lsfml-window
 
 #main
-SRC_DIRS = abstract button app_man 
+SRC_DIRS = std canvas
 OBJ_DIR = obj
 
 SRC = $(foreach SRC_DIR, $(SRC_DIRS), $(wildcard $(SRC_DIR)/*.cc))
@@ -19,6 +19,7 @@ $(OBJECT_FILES): $(OBJ_DIR)/%.o : %.cc
 	$(CC) $(IFLAGS) $(CFLAGS) -c $^ -o $@
 
 $(OBJ_DIR)/main.o: main.cc
+	mkdir -p $(@D)
 	$(CC) $(IFLAGS) $(CFLAGS) -c $^ -o $@
 
 clean:
