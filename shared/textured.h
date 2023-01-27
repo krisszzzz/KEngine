@@ -2,13 +2,13 @@
 #define TEXTURED_H
 
 #include "shared/non_copyable.h"
+#include <SFML/System/Vector2.hpp>
 #include <string.h>
 #include <SFML/Graphics.hpp>
 
 namespace kengine
 {
-    typedef std::pair<sf::Vector2i, sf::Vector2i> Border;
-
+    typedef std::pair<sf::Vector2u, sf::Vector2u> Border;
 
     /**
        @brief class that provide minimum API for working
@@ -22,8 +22,9 @@ namespace kengine
         NON_COPYABLE( Textured);
 
         // No default constructor
+        // { 0, 0 }, { 0, 0 } default value of border
         Textured( const char* texture_path,
-                  const Border& border) :
+                  const Border& border = { { 0, 0 }, { 0, 0 } }) :
             texture_path_(),
             texture_left_(),
             texture_right_()
@@ -43,54 +44,53 @@ namespace kengine
             return texture_path_;
         }
 
-        const sf::Vector2i& get_left() const
+        bool use_image_border() const
+        {
+            if ( texture_left_ == texture_right_ &&
+                 texture_left_ == sf::Vector2u { 0, 0 } )
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        void set_left( const sf::Vector2u& left)
+        {
+            texture_left_ = left;
+        }
+
+        void set_right( const sf::Vector2u& right)
+        {
+            texture_right_ = right;
+        }
+        
+        const sf::Vector2u& get_left() const
         {
             return texture_left_;
         }
 
-        sf::Vector2i& get_left()
+        sf::Vector2u& get_left()
         {
             return texture_left_;
         }
 
-        const sf::Vector2i& get_right() const
+        const sf::Vector2u& get_right() const
         {
             return texture_right_;
         }
 
-        sf::Vector2i& get_right()
+        sf::Vector2u& get_right()
         {
             return texture_right_;
         }
 
     private:
         char* texture_path_;
-        sf::Vector2i texture_left_;
-        sf::Vector2i texture_right_;
-        
+        sf::Vector2u texture_left_;
+        sf::Vector2u texture_right_;
     };
-
-    /**
-       @brief Class for creating objects that use textures but
-       have specific shape that should be displayed correctly
-     */
-
-    template <typename Shape>
-    class ShapeTextured : public Textured
-    {
-    public:
-        
-        ShapeTextured<Shape>( const char* texture_path, const Shape& shape) :
-            Textured( texture_path, get_border( shape))
-        {};
-
-        ShapeTextured<Shape>( const char* texture_path, const Border& border) :
-            Textured( texture_path, border)
-        {};
-
-        // get the border of texture
-        static Border get_border( const Shape& shape);
-    };
+    
 }
 
 #endif

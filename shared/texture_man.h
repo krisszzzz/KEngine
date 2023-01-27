@@ -18,7 +18,14 @@ namespace kengine
             for ( std::size_t i = 0; i < vtextured_.size(); i++ )
             {
                 ptextures_[i].loadFromFile( vtextured_.at( i)->get_texture_path());
+                
+                if ( vtextured_.at( i)->use_image_border() )
+                {
+                    vtextured_.at( i)->set_left( sf::Vector2u { 0, 0 });
+                    vtextured_.at( i)->set_right( ptextures_[i].getSize());
+                }
             }
+
         }
 
         void texture_register( Textured* textured)
@@ -37,7 +44,6 @@ namespace kengine
             return &instance;
         }
 
-        //void get_texture( const char* texture_path)
         sf::Image& get_texture( const size_t indx)
         {
             return ptextures_[indx];
@@ -49,6 +55,7 @@ namespace kengine
         }
 
     private:
+        // Singleton pattern require private constructor
         TexturedMan() : vtextured_(), ptextures_() {};
         
         std::vector<Textured*> vtextured_;

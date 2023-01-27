@@ -19,7 +19,7 @@ public:
      * 
      * \param point new absolute widget position in pixels.
      */
-    virtual void set_pos(Pair<int> point) = 0;
+    virtual void set_pos( Pair<int> point) = 0;
     /**
      * Get position of widget.
      * 
@@ -39,24 +39,24 @@ public:
      * 
      * \param point absolute point position in pixels.
      */
-    virtual void contains(Pair<int> point) = 0;
+    virtual void contains( Pair<int> point) = 0;
 
     /**
      * Trigger mouse events of widgets.
      * 
      * \param point absolute mouse position.
      */
-    virtual void on_mouse_press(Pair<int> point) = 0;
-    virtual void on_mouse_release(Pair<int> point) = 0;
-    virtual void on_mouse_move(Pair<int> point) = 0;
+    virtual void on_mouse_press( Pair<int> point) = 0;
+    virtual void on_mouse_release( Pair<int> point) = 0;
+    virtual void on_mouse_move( Pair<int> point) = 0;
 
     /**
      * Trigger keyboard events of widgets.
      * 
      * \param key key code.
      */
-    virtual void on_key_press(int key) = 0;
-    virtual void on_key_release(int key) = 0;
+    virtual void on_key_press( int key) = 0;
+    virtual void on_key_release( int key) = 0;
 
     /**
      * Draw widget on screen.
@@ -65,7 +65,7 @@ public:
      * \param width screen width in pixels.
      * \param height screen height in pixels.
      */
-    virtual void draw(unsigned int* screen, int width, int height) = 0;
+    virtual void draw( unsigned int* screen, int width, int height) = 0;
 };
 
 class IPushButton : public IWidget
@@ -76,7 +76,7 @@ private:
      * 
      * \param self pointer to object itself (this).
      */
-    void (*signal_)(IPushButton* self);
+    void (*signal_)( IPushButton* self);
 
     /**
      * State of button.
@@ -94,7 +94,7 @@ public:
      * 
      * \param signal pointer to signal function.
      */
-    virtual void set_signal(void (*signal)(IPushButton*)) = 0;
+    virtual void set_signal( void (*signal)( IPushButton*)) = 0;
 
     /**
   
@@ -103,7 +103,7 @@ public:
      * 
      * \param state new state value.
      */
-    void set_state(bool state) { state_ = state; }
+    void set_state( bool state) { state_ = state; }
 
     /**
      * Acquire button state.
@@ -130,7 +130,7 @@ public:
      * \param height height of pixmap.
      * \param point relative position of tool application in pixels.
      */
-    virtual void apply(unsigned int* pixmap, int width, int height, Pair<int> point) = 0;
+    virtual void apply( unsigned int* pixmap, int width, int height, Pair<int> point) = 0;
 
     /**
      * Deactivate tool.
@@ -162,17 +162,17 @@ private:
 
 public:
     IPlugin() = default;
-    IPlugin(IPlugin&) = delete;
-    IPlugin& operator=(IPlugin&) = delete;
+    IPlugin( IPlugin&) = delete;
+    IPlugin& operator=( IPlugin&) = delete;
     virtual ~IPlugin() = default;
 
     ITool* get_tool() { return tool_; }
     IWidget* get_props() { return props_; }
     IPushButton* get_tool_button() { return tool_button_; }
 
-    void set_tool(ITool* tool) { tool_ = tool; }
-    void set_props(IWidget* props) { props_ = props; }
-    void set_tool_button(IPushButton* tool_button) { tool_button_ = tool_button; }
+    void set_tool( ITool* tool) { tool_ = tool; }
+    void set_props( IWidget* props) { props_ = props; }
+    void set_tool_button( IPushButton* tool_button) { tool_button_ = tool_button; }
 };
 /**
  * Get plugin objects.

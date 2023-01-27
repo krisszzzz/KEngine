@@ -13,15 +13,19 @@ namespace kengine
     public:
         CanvasButton( bool update,
                       const char* texture_path,
-                      const Border& border) :
+                      Pair<int> pos = { 0, 0 },
+                      const Border& border = { { 0, 0 }, { 0, 0 } }
+                     ) :
             Textured( texture_path, border),
-            update_(update) {};
+            pos_(pos),
+            update_(update)
+        {};
         
         void draw( uint32_t* pixmap, int width, int height) override; 
         
-        void set_pos( Pair<int> /* point */) override {};
+        void set_pos( Pair<int> pos) override { pos_ = pos; };
 
-        Pair<int> get_pos() override { return Pair<int> {}; };
+        Pair<int> get_pos() override { return pos_; };
 
         Pair<int> get_size() override { return Pair<int> {}; };
 
@@ -37,6 +41,7 @@ namespace kengine
         ~CanvasButton() = default;
 
     private:
+        Pair<int> pos_;
         bool update_; // need to redraw a texture or not
     };
 
